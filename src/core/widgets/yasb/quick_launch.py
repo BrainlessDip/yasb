@@ -811,8 +811,6 @@ class QuickLaunchWidget(BaseWidget):
             for p in self._service.providers:
                 if p.prefix and search_text.startswith(p.prefix + " "):
                     remaining = search_text[len(p.prefix) + 1 :]
-                    if self._remember_last_query:
-                        self._last_search_text = remaining
                     self._set_prefix_chip(p.prefix, remaining)
                     return
         # Compact mode show/hide results based on whether there is text
@@ -1302,6 +1300,8 @@ class QuickLaunchWidget(BaseWidget):
         """Activate a prefix chip in the search bar."""
         self._active_prefix = prefix
         self._last_active_prefix = prefix
+        if initial_text and self._remember_last_query:
+            self._last_search_text = initial_text
         if self._popup:
             self._popup.prefix_chip.setText(prefix)
             self._popup.prefix_chip.setVisible(True)
